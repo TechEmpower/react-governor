@@ -16,7 +16,7 @@ any functional component, just like `useReducer`, but unlike `useReducer` there
 is no need for the developer to build the boilerplate of `actions`, `dispatch`,
 and `reducer`.
 
-### Let's See One
+### Let's See it in Action
 
 ```JavaScript
 const initialState = { count: 1 };
@@ -42,14 +42,16 @@ export default function Counter() {
   return (
     <div>
       <span>Current Count: {state.count}</span>
-      <button onClick={actions.increment}>Increment</button>
+      <button onClick={() => actions.increment()}>Increment</button>
       <button onClick={() => actions.add(5)}>Add 5</button>
     </div>
   );
-};
+}
 ```
 
-This should feel very similar to how `useReducer` works with actions and 
+[Test that this works](https://codesandbox.io/s/ry34v8xyq)
+
+This should feel very similar to how `useReducer` works with actions and
 reducers. However, the `actions` provided to `createGovernor` and returned from
 `useCountGovernor` are different.
 
