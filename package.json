@@ -1,0 +1,48 @@
+{
+  "name": "@techempower/react-governor",
+  "version": "0.1.0",
+  "description": "The easiest way to govern over your application's state and actions.",
+  "license": "MIT",
+  "repository": "github:TechEmpower/react-governor",
+  "bugs": "https://github.com/TechEmpower/react-governor/issues",
+  "keywords": [
+    "react-governor",
+    "react governor",
+    "redux",
+    "react",
+    "reducer",
+    "state",
+    "reduxer"
+  ],
+  "authors": [
+    "Mike Smith <msmith@techempower.com>",
+    "Nate Brady <nbrady@techempower.com>"
+  ],
+  "peerDependencies": {
+    "react": "16.8.0-alpha.1",
+    "react-dom": "16.8.0-alpha.1"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "cross-fetch": "^3.0.0",
+    "react": "16.8.0-alpha.1",
+    "react-dom": "16.8.0-alpha.1",
+    "react-scripts": "2.1.3",
+    "react-test-renderer": "16.8.0-alpha.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
