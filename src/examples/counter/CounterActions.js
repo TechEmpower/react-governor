@@ -1,6 +1,6 @@
 import fetch from "cross-fetch";
 
-export const actions = {
+export const counter_actions = {
   increment(state) {
     return {
       count: state.count + 1
