@@ -14,29 +14,38 @@ export function createGovernor(initialState = {}, actions = {}) {
     );
   }
 
+  class HookActions {
+
+    constructor(actions) {
+      for (let key in actions) {
+        if (key === 'dispatch' || key === 'state') {
+          throw new Error('Cannot name actions as "dispatch" or "state"');
+        }
+        this[key] = async (...payload) => {
+          const newState = await actions[key](...payload, this.state);
+          this.dispatch({
+            type: key,
+            newState: newState
+          });
+        };
+      }
+    }
+
+  }
+
+
   function createHook() {
     return function() {
       const [state, dispatch] = useReducer((state, action) => {
         return { ...state, ...action.newState };
       }, initialState);
 
-      function createHookActions(actions) {
-        const ret = {};
-        for (let key in actions) {
-          ret[key] = async (...payload) => {
-            const newState = await actions[key](...payload, state);
-            dispatch({
-              type: key,
-              newState: newState
-            });
-          };
-        }
-        return ret;
-      }
-
-      const hookActions = useMemo(() => createHookActions(actions), [
-        createHookActions
-      ]);
+      const hookActions = useMemo(() => {
+        console.log('hook actions');
+        return new HookActions(actions);
+      }, []);
+      hookActions.state = state;
+      hookActions.dispatch = dispatch;
 
       return [state, hookActions];
     };
