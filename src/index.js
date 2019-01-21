@@ -3,13 +3,9 @@ import { useMemo, useReducer } from "react";
 class HookActions {
   constructor(actions) {
     for (let key in actions) {
-      if (key === "dispatch" || key === "state") {
-        throw new Error('Cannot name actions as "dispatch" or "state"');
-      }
       this[key] = async (...payload) => {
         const newState = await actions[key](...payload, this.state);
         this.dispatch({
-          type: key,
           newState: newState
         });
       };
