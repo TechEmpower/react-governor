@@ -4,8 +4,8 @@ class HookActions {
   constructor(actions) {
     for (let key in actions) {
       this[key] = async (...payload) => {
-        const newState = await actions[key](...payload, this.state);
-        this.dispatch({
+        const newState = await actions[key](...payload, this.__state);
+        this.__dispatch({
           newState: newState
         });
       };
@@ -33,11 +33,11 @@ export function useGovernor(initialState = {}, actions = {}) {
 
   const hookActions = useMemo(() => {
     const hookActions = new HookActions(actions);
-    hookActions.dispatch = dispatch;
+    hookActions.__dispatch = dispatch;
     return hookActions;
   }, []);
 
-  hookActions.state = state;
+  hookActions.__state = state;
 
   return [state, hookActions];
 }
