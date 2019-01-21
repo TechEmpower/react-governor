@@ -16,7 +16,7 @@ export function createGovernor(initialState = {}, actions = {}) {
 
   class HookActions {
 
-    constructor(actions) {
+    constructor() {
       for (let key in actions) {
         if (key === 'dispatch' || key === 'state') {
           throw new Error('Cannot name actions as "dispatch" or "state"');
@@ -41,10 +41,12 @@ export function createGovernor(initialState = {}, actions = {}) {
       }, initialState);
 
       const hookActions = useMemo(() => {
-        return new HookActions(actions);
+        const hookActions = new HookActions();
+        hookActions.dispatch = dispatch;
+        return hookActions;
       }, []);
+
       hookActions.state = state;
-      hookActions.dispatch = dispatch;
 
       return [state, hookActions];
     };
