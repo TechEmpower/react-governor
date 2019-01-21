@@ -41,7 +41,6 @@ export function createGovernor(initialState = {}, actions = {}) {
       }, initialState);
 
       const hookActions = useMemo(() => {
-        console.log('hook actions');
         return new HookActions(actions);
       }, []);
       hookActions.state = state;
