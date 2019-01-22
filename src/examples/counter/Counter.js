@@ -1,15 +1,9 @@
 import React from "react";
-import { createGovernor } from "../..";
-import { actions } from "./CounterActions";
-
-const initialState = {
-  count: 0
-};
-
-export const useCountGovernor = createGovernor(initialState, actions);
+import { useGovernor } from "../..";
+import { initialState, counterActions } from "./CounterActions";
 
 export default function Counter() {
-  const [state, actions] = useCountGovernor();
+  const [state, actions] = useGovernor(initialState, counterActions);
 
   return (
     <div>
