@@ -3,8 +3,18 @@
   "version": "0.1.0",
   "description": "The easiest way to govern over your application's state and actions.",
   "license": "MIT",
-  "repository": "github:TechEmpower/react-governor",
-  "bugs": "https://github.com/TechEmpower/react-governor/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TechEmpower/react-governor.git"
+  },
+  "homepage": "https://github.com/TechEmpower/react-governor#readme",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "bugs": {
+    "url": "https://github.com/TechEmpower/react-governor/issues"
+  },
   "keywords": [
     "react-governor",
     "react governor",
@@ -24,11 +34,18 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "cross-fetch": "^3.0.0",
     "react": "16.8.0-alpha.1",
     "react-dom": "16.8.0-alpha.1",
     "react-scripts": "2.1.3",
-    "react-test-renderer": "16.8.0-alpha.1"
+    "react-test-renderer": "16.8.0-alpha.1",
+    "rollup": "^1.1.2",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-replace": "^2.1.0",
+    "rollup-plugin-uglify": "^6.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
