@@ -4,7 +4,10 @@ class HookActions {
   constructor(actions) {
     for (let key in actions) {
       this[key] = async (...payload) => {
-        const newState = await actions[key](...payload, this.__state);
+        const newState = await actions[key].apply({ state: this.__state }, [
+          ...payload,
+          this.__state
+        ]);
         this.__dispatch({
           newState: newState
         });
