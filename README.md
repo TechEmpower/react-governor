@@ -41,7 +41,7 @@ export default function Counter() {
 }
 ```
 
-[Test that this works](https://codesandbox.io/s/79477ow96)
+[Test that this works](https://codesandbox.io/s/934jnrrpmr)
 
 This should feel very similar to how `useReducer` works with actions and
 reducers.
