@@ -2,26 +2,20 @@
 
 _That typical "HOOKS ARE STILL ALPHA" warning_
 
-Create a governor hook to manage state with actions for, and created by, the people.
+Use a governor hook to manage state with actions for, and created by, the people.
 
-## What is a "Governor Hook"?
+## What is `useGovernor`?
 
-A governor hook is like any other hook to manage state. You get a governor hook from `createGovernor`
-
-## What is `createGovernor`?
-
-`createGovernor` is a function which creates a governor hook. It takes an intitial
-state and an actions object, and returns a governor hook which can be used in
-any functional component, just like `useReducer`, but unlike `useReducer` there
-is no need for the developer to build the boilerplate of `actions`, `dispatch`,
-and `reducer`.
+`useGovernor` is a hook which can be used in any functional component, just like
+`useReducer`, but unlike `useReducer` there is no need for the developer to
+build the boilerplate of `actions`, `dispatch`, and `reducer`.
 
 ### Let's See it in Action
 
 ```JavaScript
 const initialState = { count: 1 };
 
-const actions = {
+const count_actions = {
   increment(state) {
     return {
       count: state.count + 1
@@ -34,10 +28,8 @@ const actions = {
   }
 }
 
-const useCountGovernor = createGovernor(initialState, actions);
-
 export default function Counter() {
-  const [state, actions] = useCountGovernor();
+  const [state, actions] = useGovernor(initialState, count_actions);
 
   return (
     <div>
@@ -49,13 +41,12 @@ export default function Counter() {
 }
 ```
 
-[Test that this works](https://codesandbox.io/s/ry34v8xyq)
+[Test that this works](https://codesandbox.io/s/79477ow96)
 
 This should feel very similar to how `useReducer` works with actions and
-reducers. However, the `actions` provided to `createGovernor` and returned from
-`useCountGovernor` are different.
+reducers.
 
-`createGovernor` expects a collection of actions. These actions are functions
+`useGovernor` expects a collection of actions. These actions are functions
 which take in any number of arguments and the current state. These actions are
 responsible for returning an object that describes what in the state should be
 mutated.

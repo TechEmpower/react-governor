@@ -1,6 +1,22 @@
 import { useMemo, useReducer } from "react";
 
-export function createGovernor(initialState = {}, actions = {}) {
+class HookActions {
+  constructor(actions) {
+    for (let key in actions) {
+      this[key] = async (...payload) => {
+        const newState = await actions[key].apply({ state: this.__state }, [
+          ...payload,
+          this.__state
+        ]);
+        this.__dispatch({
+          newState: newState
+        });
+      };
+    }
+  }
+}
+
+export function useGovernor(initialState = {}, actions = {}) {
   if (!initialState || typeof initialState !== "object") {
     throw new TypeError(
       `initialState is invalid: expected "object"; got "${typeof initialState}"`,
@@ -14,43 +30,17 @@ export function createGovernor(initialState = {}, actions = {}) {
     );
   }
 
-  class HookActions {
+  const [state, dispatch] = useReducer((state, action) => {
+    return { ...state, ...action.newState };
+  }, initialState);
 
-    constructor() {
-      for (let key in actions) {
-        if (key === 'dispatch' || key === 'state') {
-          throw new Error('Cannot name actions as "dispatch" or "state"');
-        }
-        this[key] = async (...payload) => {
-          const newState = await actions[key](...payload, this.state);
-          this.dispatch({
-            type: key,
-            newState: newState
-          });
-        };
-      }
-    }
+  const hookActions = useMemo(() => {
+    const hookActions = new HookActions(actions);
+    hookActions.__dispatch = dispatch;
+    return hookActions;
+  }, []);
 
-  }
+  hookActions.__state = state;
 
-
-  function createHook() {
-    return function() {
-      const [state, dispatch] = useReducer((state, action) => {
-        return { ...state, ...action.newState };
-      }, initialState);
-
-      const hookActions = useMemo(() => {
-        const hookActions = new HookActions();
-        hookActions.dispatch = dispatch;
-        return hookActions;
-      }, []);
-
-      hookActions.state = state;
-
-      return [state, hookActions];
-    };
-  }
-
-  return createHook();
+  return [state, hookActions];
 }
