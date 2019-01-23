@@ -1,6 +1,6 @@
 {
   "name": "@techempower/react-governor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The easiest way to govern over your application's state and actions.",
   "license": "MIT",
   "repository": {
