@@ -1,5 +1,4 @@
 const execSync = require("child_process").execSync;
-const packageJSON = require("../package.json");
 
 process.on('unhandledRejection', err => {
   throw err;
@@ -43,6 +42,7 @@ exec('npm run build');
 console.log('Updating package.json');
 exec(`npm version ${bump}`);
 
+const packageJSON = require("../package.json");
 console.log('Pushing to npm repository');
 exec('npm publish --access public');
 
