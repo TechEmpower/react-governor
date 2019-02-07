@@ -15,7 +15,7 @@ build the boilerplate of `actions`, `dispatch`, and `reducer`.
 ```JavaScript
 const initialState = { count: 1 };
 
-const count_actions = {
+const countActions = {
   increment(state) {
     return {
       count: state.count + 1
@@ -29,7 +29,7 @@ const count_actions = {
 }
 
 export default function Counter() {
-  const [state, actions] = useGovernor(initialState, count_actions);
+  const [state, actions] = useGovernor(initialState, countActions);
 
   return (
     <div>
