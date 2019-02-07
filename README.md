@@ -1,7 +1,5 @@
 # React Governor
 
-_That typical "HOOKS ARE STILL ALPHA" warning_
-
 Use a governor hook to manage state with actions for, and created by, the people.
 
 ## What is `useGovernor`?
