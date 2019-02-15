@@ -1,10 +1,10 @@
 import { useMemo, useReducer } from "react";
 
 class HookActions {
-  constructor(actions) {
-    for (let key in actions) {
+  constructor(contract) {
+    for (let key in contract) {
       this[key] = async (...payload) => {
-        const newState = await actions[key].apply({ state: this.__state }, [
+        const newState = await contract[key].apply({ state: this.__state }, [
           ...payload,
           this.__state
         ]);
@@ -16,11 +16,11 @@ class HookActions {
   }
 }
 
-export function useGovernor(initialState = {}, actions = {}) {
-  if (!actions || typeof actions !== "object") {
+export function useGovernor(initialState = {}, contract = {}) {
+  if (!contract || typeof contract !== "object") {
     throw new TypeError(
-      `actions is invalid: expected "object"; got "${typeof actions}"`,
-      actions
+      `contract is invalid: expected "object"; got "${typeof contract}"`,
+      contract
     );
   }
 
@@ -32,7 +32,7 @@ export function useGovernor(initialState = {}, actions = {}) {
   }, initialState);
 
   const hookActions = useMemo(() => {
-    const hookActions = new HookActions(actions);
+    const hookActions = new HookActions(contract);
     hookActions.__dispatch = dispatch;
     return hookActions;
   }, []);

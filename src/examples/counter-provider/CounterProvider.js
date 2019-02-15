@@ -1,11 +1,11 @@
 import React from "react";
 import { useGovernor } from "../../";
-import { initialState, counterActions } from "../counter/CounterActions";
+import { initialState, contract } from "../counter/CounterContract";
 
 const CounterContext = React.createContext();
 
 export default function CounterProvider(props) {
-  const [state, actions] = useGovernor(initialState, counterActions);
+  const [state, actions] = useGovernor(initialState, contract);
 
   return (
     <CounterContext.Provider value={[state, actions]}>

@@ -1,9 +1,9 @@
 import React from "react";
 import { useGovernor } from "../..";
-import { initialState, counterActions } from "./CounterActions";
+import { initialState, contract } from "./CounterContract";
 
 export default function Counter() {
-  const [state, actions] = useGovernor(initialState, counterActions);
+  const [state, actions] = useGovernor(initialState, contract);
 
   return (
     <div>
