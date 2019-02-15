@@ -17,12 +17,6 @@ class HookActions {
 }
 
 export function useGovernor(initialState = {}, actions = {}) {
-  if (!initialState || typeof initialState !== "object") {
-    throw new TypeError(
-      `initialState is invalid: expected "object"; got "${typeof initialState}"`,
-      initialState
-    );
-  }
   if (!actions || typeof actions !== "object") {
     throw new TypeError(
       `actions is invalid: expected "object"; got "${typeof actions}"`,
@@ -31,7 +25,10 @@ export function useGovernor(initialState = {}, actions = {}) {
   }
 
   const [state, dispatch] = useReducer((state, action) => {
-    return { ...state, ...action.newState };
+    if (state && typeof state === "object") {
+      return { ...state, ...action.newState };
+    }
+    return action.newState;
   }, initialState);
 
   const hookActions = useMemo(() => {
