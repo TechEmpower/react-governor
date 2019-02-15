@@ -4,7 +4,7 @@ export const initialState = {
   count: 0
 };
 
-export const counterActions = {
+export const contract = {
   increment(state) {
     return {
       count: state.count + 1

@@ -15,7 +15,7 @@ build the boilerplate of `actions`, `dispatch`, and `reducer`.
 ```JavaScript
 const initialState = { count: 1 };
 
-const count_actions = {
+const contract = {
   increment(state) {
     return {
       count: state.count + 1
@@ -29,7 +29,7 @@ const count_actions = {
 }
 
 export default function Counter() {
-  const [state, actions] = useGovernor(initialState, count_actions);
+  const [state, actions] = useGovernor(initialState, contract);
 
   return (
     <div>
@@ -46,10 +46,10 @@ export default function Counter() {
 This should feel very similar to how `useReducer` works with actions and
 reducers.
 
-`useGovernor` expects a collection of actions. These actions are functions
-which take in any number of arguments and the current state. These actions are
-responsible for returning an object that describes what in the state should be
-mutated.
+`useGovernor` expects a collection of actions to act as the `contract`.
+These actions are functions which take in any number of arguments and the
+current state. These actions are responsible for returning an object that
+describes what in the state should be mutated.
 
 As from our example, the `increment` action returns an object describing that
 the state should be mutated such that `count` is `state.count + 1`. Similarly,
