@@ -7,7 +7,7 @@ import resolve from "rollup-plugin-node-resolve";
 process.env.NODE_ENV = "production";
 
 const config = {
-  input: "src/index.js",
+  input: "src/index.ts",
   output: {
     name: "ReactGovernor",
     globals: {
@@ -15,7 +15,7 @@ const config = {
       "react-dom": "ReactDOM"
     },
     format: "umd",
-    file: "index.js"
+    file: "index.ts"
   },
   external: ["react", "react-dom"],
   plugins: [
