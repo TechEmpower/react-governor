@@ -1,11 +1,13 @@
 import { useMemo, useReducer } from "react";
 
 class HookActions {
-  constructor(contract) {
+  constructor(contract, dispatch) {
+    this.__dispatch = dispatch;
+
     for (let key in contract) {
-      this[key] = async (...payload) => {
+      this[key] = async (...args) => {
         const newState = await contract[key].apply({ state: this.__state }, [
-          ...payload,
+          ...args,
           this.__state
         ]);
         this.__dispatch({
@@ -16,6 +18,14 @@ class HookActions {
   }
 }
 
+/**
+ * Governs state by creating actions given by a contract.
+ *
+ * @param initialState The initial state of the governor
+ * @param contract The contract from which actions are created
+ * @returns [state, actions] - the current state of the governor and the
+ *          actions that can be invoked.
+ */
 export function useGovernor(initialState = {}, contract = {}) {
   if (!contract || typeof contract !== "object") {
     throw new TypeError(
@@ -24,16 +34,12 @@ export function useGovernor(initialState = {}, contract = {}) {
     );
   }
 
-  const [state, dispatch] = useReducer((state, action) => {
-    return action.newState;
-  }, initialState);
+  const [state, dispatch] = useReducer(
+    (state, action) => action.newState,
+    initialState
+  );
 
-  const hookActions = useMemo(() => {
-    const hookActions = new HookActions(contract);
-    hookActions.__dispatch = dispatch;
-    return hookActions;
-  }, []);
-
+  const hookActions = useMemo(() => new HookActions(contract, dispatch), []);
   hookActions.__state = state;
 
   return [state, hookActions];
