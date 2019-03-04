@@ -110,6 +110,25 @@ it("can addNewState", async () => {
   expect(val.props.value).toBe(0);
 });
 
+it("can removeState", async () => {
+  const counter = TestRenderer.create(<Counter />);
+  const val = counter.root.findByProps({ className: "val" });
+  const newState = counter.root.findByProps({ className: "newState" });
+  const button = counter.root.findByProps({ className: "addNewState" });
+  const removeButton = counter.root.findByProps({ className: "removeState" });
+
+  expect(newState.props.value).toBe(undefined);
+
+  await button.props.onClick();
+
+  expect(newState.props.value).toBe("Hello");
+  expect(val.props.value).toBe(0);
+
+  await removeButton.props.onClick();
+
+  expect(val.props.value).toBe(undefined);
+});
+
 it("can asyncFunc", async () => {
   const counter = TestRenderer.create(<Counter />);
   const val = counter.root.findByProps({ className: "val" });

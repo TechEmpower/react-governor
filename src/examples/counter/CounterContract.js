@@ -32,8 +32,12 @@ export const contract = {
   },
   addNewState(val) {
     return {
+      ...this.state,
       newState: val
     };
+  },
+  removeState() {
+    return {};
   },
   async asyncFunc() {
     // Block with a promise that resolved a new count

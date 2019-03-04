@@ -25,9 +25,6 @@ export function useGovernor(initialState = {}, contract = {}) {
   }
 
   const [state, dispatch] = useReducer((state, action) => {
-    if (state && typeof state === "object") {
-      return { ...state, ...action.newState };
-    }
     return action.newState;
   }, initialState);
 
