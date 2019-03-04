@@ -32,7 +32,6 @@
     "react": "16.8.0-alpha.1",
     "react-dom": "16.8.0-alpha.1"
   },
-  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "7.1.6",
@@ -64,7 +63,12 @@
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-replace": "^2.1.0",
-    "rollup-plugin-uglify": "^6.0.1"
+    "rollup-plugin-uglify": "^6.0.1",
+    "typescript": "^3.3.3333",
+    "@types/jest": "^24.0.9",
+    "@types/node": "^11.10.4",
+    "@types/react": "^16.8.6",
+    "@types/react-dom": "^16.8.2"
   },
   "scripts": {
     "build": "node scripts/build.js",
@@ -111,12 +115,14 @@
     ]
   },
   "babel": {
-    "presets": [[
-      "react-app",
-      {
-        "helpers": false,
-        "absoluteRuntime": false
-      }
-    ]]
+    "presets": [
+      [
+        "react-app",
+        {
+          "helpers": false,
+          "absoluteRuntime": false
+        }
+      ]
+    ]
   }
 }
