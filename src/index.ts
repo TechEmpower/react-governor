@@ -8,8 +8,7 @@ class HookActions {
   __state: Object;
   readonly __dispatch: DispatchFunc;
 
-  constructor(initialState: any, contract: Object, dispatch: DispatchFunc) {
-    this.__state = initialState;
+  constructor(contract: Object, dispatch: DispatchFunc) {
     this.__dispatch = dispatch;
 
     for (let key in contract!) {
@@ -43,11 +42,7 @@ export function useGovernor(
     initialState
   );
 
-  const hookActions = useMemo(
-    () => new HookActions(initialState, contract!, dispatch),
-    []
-  );
-
+  const hookActions = useMemo(() => new HookActions(contract!, dispatch), []);
   hookActions.__state = state;
 
   return [state, hookActions];
