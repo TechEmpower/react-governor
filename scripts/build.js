@@ -15,5 +15,5 @@ exec("rollup --config rollup.config.js", {
   NODE_ENV: "production"
 });
 
-const size = gzipSize.sync(fs.readFileSync("index.js"));
+const size = gzipSize.sync(fs.readFileSync("index.ts"));
 console.log("\ngzipped, the UMD build is %s", prettyBytes(size));
