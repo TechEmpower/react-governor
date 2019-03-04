@@ -19,6 +19,7 @@ export default function Counter() {
         className="addNewState"
         onClick={() => actions.addNewState("Hello")}
       />
+      <button className="removeState" onClick={() => actions.removeState()} />
       <button className="asyncFunc" onClick={actions.asyncFunc} />
       <input className="googleStatus" value={state.status} />
       <button className="fetchGoogle" onClick={actions.fetchGoogle} />
