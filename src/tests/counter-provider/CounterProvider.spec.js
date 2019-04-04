@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { act } from "react-dom/test-utils";
 import TestRenderer from "react-test-renderer";
 
 import CounterProvider from "../../examples/counter-provider/CounterProvider";
@@ -57,18 +58,20 @@ it("shares state among sibling context consumers", async () => {
     .findByType(CounterChildTwo)
     .findByProps({ className: "dec" });
 
-  expect(val.props.value).toBe(0);
-  expect(val2.props.value).toBe(0);
+  await act(async () => {
+    expect(val.props.value).toBe(0);
+    expect(val2.props.value).toBe(0);
 
-  await buttonOneInc.props.onClick();
+    await buttonOneInc.props.onClick();
 
-  expect(val.props.value).toBe(1);
-  expect(val2.props.value).toBe(1);
+    expect(val.props.value).toBe(1);
+    expect(val2.props.value).toBe(1);
 
-  await buttonTwoDec.props.onClick();
+    await buttonTwoDec.props.onClick();
 
-  expect(val.props.value).toBe(0);
-  expect(val2.props.value).toBe(0);
+    expect(val.props.value).toBe(0);
+    expect(val2.props.value).toBe(0);
+  });
 });
 
 it("shares state among sibling and children context consumers", async () => {
@@ -105,25 +108,27 @@ it("shares state among sibling and children context consumers", async () => {
     .findByType(CounterGrandchild)
     .findByProps({ className: "inc" });
 
-  expect(val.props.value).toBe(0);
-  expect(val2.props.value).toBe(0);
-  expect(gval.props.value).toBe(0);
+  await act(async () => {
+    expect(val.props.value).toBe(0);
+    expect(val2.props.value).toBe(0);
+    expect(gval.props.value).toBe(0);
 
-  await buttonOneInc.props.onClick();
+    await buttonOneInc.props.onClick();
 
-  expect(val.props.value).toBe(1);
-  expect(val2.props.value).toBe(1);
-  expect(gval.props.value).toBe(1);
+    expect(val.props.value).toBe(1);
+    expect(val2.props.value).toBe(1);
+    expect(gval.props.value).toBe(1);
 
-  await buttonTwoDec.props.onClick();
+    await buttonTwoDec.props.onClick();
 
-  expect(val.props.value).toBe(0);
-  expect(val2.props.value).toBe(0);
-  expect(gval.props.value).toBe(0);
+    expect(val.props.value).toBe(0);
+    expect(val2.props.value).toBe(0);
+    expect(gval.props.value).toBe(0);
 
-  await gbutton.props.onClick();
+    await gbutton.props.onClick();
 
-  expect(val.props.value).toBe(1);
-  expect(val2.props.value).toBe(1);
-  expect(gval.props.value).toBe(1);
+    expect(val.props.value).toBe(1);
+    expect(val2.props.value).toBe(1);
+    expect(gval.props.value).toBe(1);
+  });
 });

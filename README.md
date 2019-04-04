@@ -1,6 +1,6 @@
 # React Governor
 
-_That typical "HOOKS ARE STILL ALPHA" warning_
+![Build Status](https://travis-ci.org/TechEmpower/react-governor.svg?branch=master)
 
 Use a governor hook to manage state with actions for, and created by, the people.
 
@@ -29,6 +29,7 @@ const contract = {
 }
 
 export default function Counter() {
+
   const [state, actions] = useGovernor(initialState, contract);
 
   return (
