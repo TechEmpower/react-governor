@@ -1,5 +1,7 @@
 # React Governor
 
+![Build Status](https://travis-ci.org/TechEmpower/react-governor.svg?branch=master)
+
 Use a governor hook to manage state with actions for, and created by, the people.
 
 ## What is `useGovernor`?
