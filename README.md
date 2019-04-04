@@ -1,5 +1,7 @@
 # React Governor
 
+![Build Status](https://codebuild.us-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiTjNsMDNUT0ZPZDBWSHg2SlQrSStZajRjTG1QRkpVUktpelJKSzU1NjloZHhoL3B4TnN4bmkxWGk1VW1WUnVTYWd0QjZYQUt3ZUJPd0s4djdGT1NHTTZRPSIsIml2UGFyYW1ldGVyU3BlYyI6ImpKOEF1ZWI0RFRhTzA2WUoiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+
 Use a governor hook to manage state with actions for, and created by, the people.
 
 ## What is `useGovernor`?

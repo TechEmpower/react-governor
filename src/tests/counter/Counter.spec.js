@@ -130,16 +130,18 @@ it("can removeState", async () => {
   const button = counter.root.findByProps({ className: "addNewState" });
   const removeButton = counter.root.findByProps({ className: "removeState" });
 
-  expect(newState.props.value).toBe(undefined);
+  await act(async() => {
+    expect(newState.props.value).toBe(undefined);
 
-  await button.props.onClick();
+    await button.props.onClick();
 
-  expect(newState.props.value).toBe("Hello");
-  expect(val.props.value).toBe(0);
+    expect(newState.props.value).toBe("Hello");
+    expect(val.props.value).toBe(0);
 
-  await removeButton.props.onClick();
+    await removeButton.props.onClick();
 
-  expect(val.props.value).toBe(undefined);
+    expect(val.props.value).toBe(undefined);
+  });
 });
 
 it("can asyncFunc", async () => {
