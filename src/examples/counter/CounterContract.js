@@ -4,7 +4,7 @@ export const initialState = {
   count: 0
 };
 
-export const counterActions = {
+export const contract = {
   increment(state) {
     return {
       count: state.count + 1
@@ -32,8 +32,12 @@ export const counterActions = {
   },
   addNewState(val) {
     return {
+      ...this.state,
       newState: val
     };
+  },
+  removeState() {
+    return {};
   },
   async asyncFunc() {
     // Block with a promise that resolved a new count

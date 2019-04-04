@@ -1,9 +1,9 @@
 import React from "react";
 import { useGovernor } from "../..";
-import { initialState, counterActions } from "./CounterActions";
+import { initialState, contract } from "./CounterContract";
 
 export default function Counter() {
-  const [state, actions] = useGovernor(initialState, counterActions);
+  const [state, actions] = useGovernor(initialState, contract);
 
   return (
     <div>
@@ -19,6 +19,7 @@ export default function Counter() {
         className="addNewState"
         onClick={() => actions.addNewState("Hello")}
       />
+      <button className="removeState" onClick={() => actions.removeState()} />
       <button className="asyncFunc" onClick={actions.asyncFunc} />
       <input className="googleStatus" value={state.status} />
       <button className="fetchGoogle" onClick={actions.fetchGoogle} />
