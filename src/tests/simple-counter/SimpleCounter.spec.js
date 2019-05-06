@@ -22,7 +22,7 @@ it("can increment", async () => {
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "inc" });
 
-  await act(async() => {
+  await act(async () => {
     expect(val.props.value).toBe(0);
 
     await button.props.onClick();
@@ -40,7 +40,7 @@ it("can decrement", async () => {
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "dec" });
 
-  await act(async() => {
+  await act(async () => {
     expect(val.props.value).toBe(0);
 
     await button.props.onClick();
@@ -58,7 +58,7 @@ it("can add5", async () => {
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "add5" });
 
-  await act(async() => {
+  await act(async () => {
     expect(val.props.value).toBe(0);
 
     await button.props.onClick();
@@ -76,7 +76,7 @@ it("can sub2", async () => {
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "sub2" });
 
-  await act(async() => {
+  await act(async () => {
     expect(val.props.value).toBe(0);
 
     await button.props.onClick();

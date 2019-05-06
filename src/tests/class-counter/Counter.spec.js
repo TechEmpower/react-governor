@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
 import TestRenderer from "react-test-renderer";
 
-import Counter from "../../examples/counter/Counter";
+import Counter from "../../examples/class-counter/Counter";
 
 it("renders without crashing", () => {
   const div = document.createElement("div");
