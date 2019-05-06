@@ -39,7 +39,9 @@ export function useGovernor(initialState = {}, contract = {}) {
     initialState
   );
 
-  const hookActions = useMemo(() => new HookActions(contract, dispatch), []);
+  const hookActions = useMemo(() => new HookActions(contract, dispatch), [
+    contract
+  ]);
   hookActions.__state = state;
 
   return [state, hookActions];
