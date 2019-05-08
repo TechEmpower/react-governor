@@ -51,6 +51,7 @@
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-react": "7.11.1",
+    "eslint-plugin-react-hooks": "^1.6.0",
     "gzip-size": "^5.0.0",
     "jest": "23.6.0",
     "jest-pnp-resolver": "1.0.1",
@@ -72,7 +73,14 @@
     "publish": "node scripts/publish.js --"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "plugins": [
+      "react-hooks"
+    ],
+    "rules": {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
+    }
   },
   "jest": {
     "collectCoverageFrom": [
