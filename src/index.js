@@ -4,6 +4,14 @@ class HookActions {
   constructor(contract, dispatch) {
     this.__dispatch = dispatch;
 
+    if (typeof contract === "function") {
+      const _contract = new contract();
+      contract = {};
+      Object.getOwnPropertyNames(_contract.__proto__)
+        .splice(1) // remove the constructor
+        .forEach(key => (contract[key] = _contract[key]));
+    }
+
     for (let key in contract) {
       this[key] = async (...args) => {
         const newState = await contract[key].apply({ state: this.__state }, [
@@ -27,9 +35,12 @@ class HookActions {
  *          actions that can be invoked.
  */
 export function useGovernor(initialState = {}, contract = {}) {
-  if (!contract || typeof contract !== "object") {
+  if (
+    !contract ||
+    (typeof contract !== "object" && typeof contract !== "function")
+  ) {
     throw new TypeError(
-      `contract is invalid: expected "object"; got "${typeof contract}"`,
+      `contract is invalid: expected "object" or "class"; got "${typeof contract}"`,
       contract
     );
   }
