@@ -158,6 +158,20 @@ it("can asyncFunc", async () => {
   });
 });
 
+it("can do compound async actions", async () => {
+  const counter = TestRenderer.create(<Counter />);
+  const val = counter.root.findByProps({ className: "val" });
+  const button = counter.root.findByProps({ className: "compoundAsyncFunc" });
+
+  await act(async () => {
+    expect(val.props.value).toBe(0);
+
+    await button.props.onClick();
+
+    expect(val.props.value).toBe(257);
+  });
+});
+
 it("can fetchGoogle", async () => {
   const counter = TestRenderer.create(<Counter />);
   const val = counter.root.findByProps({ className: "googleStatus" });
