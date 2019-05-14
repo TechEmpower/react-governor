@@ -24,7 +24,9 @@ export default function Counter() {
       <button
         className="compoundAsyncFunc"
         onClick={async () => {
+          // Should set `state.count` = 256
           await actions.asyncFunc();
+          // Should set `state.count` = 257
           actions.increment();
         }}
       />
