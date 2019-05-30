@@ -1,34 +1,96 @@
 import { useMemo, useReducer } from "react";
 
-class HookActions {
-  constructor(contract, dispatch) {
-    this.__dispatch = dispatch;
+/**
+ * Helper function to take a contract and dispatch callback to transfrom
+ * them into an object of actions which ultimately dispatch to an underlying
+ * reducer.
+ *
+ * Example:
+ * const contract = {
+ *   foo(bar, state) {
+ *     return {
+ *       ...state,
+ *       bar
+ *     };
+ *   }
+ * };
+ *
+ * This contract will be turned into an action that is analogous to:
+ * {
+ *   foo(bar) {
+ *     dispatch({ "reduce": state => contract.foo(bar, state) });
+ *   }
+ * }
+ *
+ *
+ * Async contract functions are a little different since they return a promise.
+ *
+ * Example:
+ * const contract = {
+ *   async foo(bar, state) {
+ *     return state => ({
+ *       ...state,
+ *       bar
+ *     });
+ *   }
+ * };
+ *
+ * This contract will be turned into an action that is analgous to:
+ * {
+ *   foo(bar) {
+ *     dispatch({ "reduce": state => state });
+ *     contract.foo(bar, state).then(reducer => dispatch({
+ *       "reduce": state => reducer(state)
+ *     }));
+ *   }
+ * }
+ *
+ * @param contract The contract from which actions are created
+ * @param dispatch The underlying useReducer's dispatch callback
+ */
+function createActions(contract, dispatch) {
+  const hookActions = {};
 
-    if (typeof contract === "function") {
-      const _contract = new contract();
-      contract = {};
-      Object.getOwnPropertyNames(_contract.__proto__)
-        .splice(1) // remove the constructor
-        .forEach(key => (contract[key] = _contract[key]));
-    }
+  for (let key in contract) {
+    hookActions[key] = (...args) => {
+      dispatch({
+        reduce: state => {
+          const newState = contract[key](...args, state);
 
-    for (let key in contract) {
-      contract[key] = contract[key].bind(this);
-      this[key] = (...args) => {
-        this.__dispatch({
-          reduce: state => {
-            const newState = contract[key](...args, state);
-            if (typeof newState.then === "undefined") {
-              return newState;
-            }
-            return state;
+          if (typeof newState.then === "undefined") {
+            // This was a non-async func; just return the new state
+            return newState;
           }
-        });
-      };
-    }
+
+          newState.then(reducer => {
+            if (typeof reducer !== "function") {
+              dispatch({
+                reduce: () => {
+                  throw new TypeError(
+                    `async action "${key}" must return a reducer function; instead got "${typeof reducer}"`
+                  );
+                }
+              });
+            }
+            // Once the promise is resolved, we need to dispatch a new
+            // action based on the reducer function the async func
+            // returns given the new state at the time of the resolution.
+            dispatch({
+              reduce: state => reducer(state)
+            });
+          });
+
+          // Async func cannot mutate state directly; return current state.
+          return state;
+        }
+      });
+    };
   }
+
+  return hookActions;
 }
 
+// We do not inline this because it would cause 2 renders on first use.
 function reducer(state, action) {
   return action.reduce(state);
 }
@@ -41,7 +103,7 @@ function reducer(state, action) {
  * @returns [state, actions] - the current state of the governor and the
  *          actions that can be invoked.
  */
-export function useGovernor(initialState = {}, contract = {}) {
+function useGovernor(initialState = {}, contract = {}) {
   if (
     !contract ||
     (typeof contract !== "object" && typeof contract !== "function")
@@ -54,9 +116,12 @@ export function useGovernor(initialState = {}, contract = {}) {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const hookActions = useMemo(() => new HookActions(contract, dispatch), [
-    contract
+  const actions = useMemo(() => createActions(contract, dispatch), [
+    contract,
+    dispatch
   ]);
 
-  return [state, hookActions];
+  return [state, actions];
 }
+
+export { useGovernor };
