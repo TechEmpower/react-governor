@@ -1,6 +1,10 @@
 # React Governor
 
+![NPM VERSION](https://img.shields.io/npm/v/@techempower/react-governor.svg)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+![Open Issues](https://img.shields.io/github/issues-raw/techempower/react-governor.svg)
 ![Build Status](https://travis-ci.org/TechEmpower/react-governor.svg?branch=master)
+
 
 Use a governor hook to manage state with actions for, and created by, the people.
 
