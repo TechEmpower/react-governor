@@ -13,17 +13,24 @@ class HookActions {
     }
 
     for (let key in contract) {
-      this[key] = async (...args) => {
-        const newState = await contract[key].apply({ state: this.__state }, [
-          ...args,
-          this.__state
-        ]);
+      contract[key] = contract[key].bind(this);
+      this[key] = (...args) => {
         this.__dispatch({
-          newState: newState
+          reduce: state => {
+            const newState = contract[key](...args, state);
+            if (typeof newState.then === "undefined") {
+              return newState;
+            }
+            return state;
+          }
         });
       };
     }
   }
+}
+
+function reducer(state, action) {
+  return action.reduce(state);
 }
 
 /**
@@ -45,15 +52,11 @@ export function useGovernor(initialState = {}, contract = {}) {
     );
   }
 
-  const [state, dispatch] = useReducer(
-    (state, action) => action.newState,
-    initialState
-  );
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const hookActions = useMemo(() => new HookActions(contract, dispatch), [
     contract
   ]);
-  hookActions.__state = state;
 
   return [state, hookActions];
 }

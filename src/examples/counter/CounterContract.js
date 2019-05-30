@@ -30,9 +30,9 @@ export const contract = {
       count: state.count + val + val2
     };
   },
-  addNewState(val) {
+  addNewState(val, state) {
     return {
-      ...this.state,
+      ...state,
       newState: val
     };
   },
@@ -46,20 +46,23 @@ export const contract = {
         resolve(256);
       }, 1000)
     );
+
     // set the state count to our promised count
-    return {
-      count: count
-    };
+    this.set(count);
   },
   async fetchGoogle() {
     let google = await fetch("https://www.google.com");
+
+    this.setStatus(google.status);
+  },
+  setStatus(status) {
     return {
-      status: google.status
+      status
     };
   },
-  statedInc() {
+  statedInc(state) {
     return {
-      count: this.state.count + 1
+      count: state.count + 1
     };
   }
 };

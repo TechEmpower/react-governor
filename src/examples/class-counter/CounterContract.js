@@ -30,9 +30,9 @@ export class contract {
       count: state.count + val + val2
     };
   }
-  addNewState(val) {
+  addNewState(val, state) {
     return {
-      ...this.state,
+      ...state,
       newState: val
     };
   }
@@ -57,9 +57,9 @@ export class contract {
       status: google.status
     };
   }
-  statedInc() {
+  statedInc(state) {
     return {
-      count: this.state.count + 1
+      count: state.count + 1
     };
   }
 }
