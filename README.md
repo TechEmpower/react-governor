@@ -2,7 +2,6 @@
 
 ![Build Status](https://travis-ci.org/TechEmpower/react-governor.svg?branch=master)
 
-
 Use a governor hook to manage state with actions for, and created by, the people.
 
 Available as an [npm package](https://www.npmjs.com/package/@techempower/react-governor).
@@ -45,7 +44,7 @@ export default function Counter() {
 }
 ```
 
-[Test that this works](https://codesandbox.io/s/934jnrrpmr)
+[Test that this works](https://codesandbox.io/s/hopeful-shannon-lz433)
 
 This should feel very similar to how `useReducer` works with actions and
 reducers.
