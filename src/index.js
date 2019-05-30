@@ -63,20 +63,18 @@ function createActions(contract, dispatch) {
           }
 
           newState.then(reducer => {
+            let error;
             if (typeof reducer !== "function") {
-              dispatch({
-                reduce: () => {
-                  throw new TypeError(
-                    `async action "${key}" must return a reducer function; instead got "${typeof reducer}"`
-                  );
-                }
-              });
+              error = new TypeError(
+                `async action "${key}" must return a reducer function; instead got "${typeof reducer}"`
+              );
             }
             // Once the promise is resolved, we need to dispatch a new
             // action based on the reducer function the async func
             // returns given the new state at the time of the resolution.
             dispatch({
-              reduce: state => reducer(state)
+              reduce: state => reducer(state),
+              error
             });
           });
 
@@ -92,6 +90,9 @@ function createActions(contract, dispatch) {
 
 // We do not inline this because it would cause 2 renders on first use.
 function reducer(state, action) {
+  if (action.error) {
+    throw action.error;
+  }
   return action.reduce(state);
 }
 
@@ -116,10 +117,7 @@ function useGovernor(initialState = {}, contract = {}) {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const actions = useMemo(() => createActions(contract, dispatch), [
-    contract,
-    dispatch
-  ]);
+  const actions = useMemo(() => createActions(contract, dispatch), [contract]);
 
   return [state, actions];
 }
