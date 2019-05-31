@@ -29,7 +29,6 @@ export default function Counter() {
 
   numRenders++;
 
-  console.log(JSON.stringify(state));
   return (
     <>
       <div className="count">{state.count}</div>
