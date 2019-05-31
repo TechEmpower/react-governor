@@ -58,16 +58,16 @@ it("shares state among sibling context consumers", async () => {
     .findByType(CounterChildTwo)
     .findByProps({ className: "dec" });
 
-  await act(async () => {
+  act(() => {
     expect(val.props.value).toBe(0);
     expect(val2.props.value).toBe(0);
 
-    await buttonOneInc.props.onClick();
+    buttonOneInc.props.onClick();
 
     expect(val.props.value).toBe(1);
     expect(val2.props.value).toBe(1);
 
-    await buttonTwoDec.props.onClick();
+    buttonTwoDec.props.onClick();
 
     expect(val.props.value).toBe(0);
     expect(val2.props.value).toBe(0);
@@ -108,24 +108,24 @@ it("shares state among sibling and children context consumers", async () => {
     .findByType(CounterGrandchild)
     .findByProps({ className: "inc" });
 
-  await act(async () => {
+  act(() => {
     expect(val.props.value).toBe(0);
     expect(val2.props.value).toBe(0);
     expect(gval.props.value).toBe(0);
 
-    await buttonOneInc.props.onClick();
+    buttonOneInc.props.onClick();
 
     expect(val.props.value).toBe(1);
     expect(val2.props.value).toBe(1);
     expect(gval.props.value).toBe(1);
 
-    await buttonTwoDec.props.onClick();
+    buttonTwoDec.props.onClick();
 
     expect(val.props.value).toBe(0);
     expect(val2.props.value).toBe(0);
     expect(gval.props.value).toBe(0);
 
-    await gbutton.props.onClick();
+    gbutton.props.onClick();
 
     expect(val.props.value).toBe(1);
     expect(val2.props.value).toBe(1);

@@ -17,128 +17,128 @@ it("starts with initial state", () => {
   expect(val.props.value).toBe(0);
 });
 
-it("can increment", async () => {
+it("can increment", () => {
   const counter = TestRenderer.create(<Counter />);
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "inc" });
 
-  await act(async () => {
+  act(() => {
     expect(val.props.value).toBe(0);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(1);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(2);
   });
 });
 
-it("can decrement", async () => {
+it("can decrement", () => {
   const counter = TestRenderer.create(<Counter />);
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "dec" });
 
-  await act(async () => {
+  act(() => {
     expect(val.props.value).toBe(0);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(-1);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(-2);
   });
 });
 
-it("can add5", async () => {
+it("can add5", () => {
   const counter = TestRenderer.create(<Counter />);
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "add5" });
 
-  await act(async () => {
+  act(() => {
     expect(val.props.value).toBe(0);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(5);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(10);
   });
 });
 
-it("can set", async () => {
+it("can set", () => {
   const counter = TestRenderer.create(<Counter />);
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "set" });
 
-  await act(async () => {
+  act(() => {
     expect(val.props.value).toBe(0);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(137);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(137);
   });
 });
 
-it("can addSum", async () => {
+it("can addSum", () => {
   const counter = TestRenderer.create(<Counter />);
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "addSum" });
 
-  await act(async () => {
+  act(() => {
     expect(val.props.value).toBe(0);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(7);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(14);
   });
 });
 
-it("can addNewState", async () => {
+it("can addNewState", () => {
   const counter = TestRenderer.create(<Counter />);
   const val = counter.root.findByProps({ className: "val" });
   const newState = counter.root.findByProps({ className: "newState" });
   const button = counter.root.findByProps({ className: "addNewState" });
 
-  await act(async () => {
+  act(() => {
     expect(newState.props.value).toBe(undefined);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(newState.props.value).toBe("Hello");
     expect(val.props.value).toBe(0);
   });
 });
 
-it("can removeState", async () => {
+it("can removeState", () => {
   const counter = TestRenderer.create(<Counter />);
   const val = counter.root.findByProps({ className: "val" });
   const newState = counter.root.findByProps({ className: "newState" });
   const button = counter.root.findByProps({ className: "addNewState" });
   const removeButton = counter.root.findByProps({ className: "removeState" });
 
-  await act(async () => {
+  act(() => {
     expect(newState.props.value).toBe(undefined);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(newState.props.value).toBe("Hello");
     expect(val.props.value).toBe(0);
 
-    await removeButton.props.onClick();
+    removeButton.props.onClick();
 
     expect(val.props.value).toBe(undefined);
   });

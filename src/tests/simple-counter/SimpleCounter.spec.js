@@ -17,73 +17,73 @@ it("starts with initial state", () => {
   expect(val.props.value).toBe(0);
 });
 
-it("can increment", async () => {
+it("can increment", () => {
   const counter = TestRenderer.create(<SimpleCounter />);
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "inc" });
 
-  await act(async () => {
+  act(() => {
     expect(val.props.value).toBe(0);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(1);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(2);
   });
 });
 
-it("can decrement", async () => {
+it("can decrement", () => {
   const counter = TestRenderer.create(<SimpleCounter />);
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "dec" });
 
-  await act(async () => {
+  act(() => {
     expect(val.props.value).toBe(0);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(-1);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(-2);
   });
 });
 
-it("can add5", async () => {
+it("can add5", () => {
   const counter = TestRenderer.create(<SimpleCounter />);
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "add5" });
 
-  await act(async () => {
+  act(() => {
     expect(val.props.value).toBe(0);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(5);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(10);
   });
 });
 
-it("can sub2", async () => {
+it("can sub2", () => {
   const counter = TestRenderer.create(<SimpleCounter />);
   const val = counter.root.findByProps({ className: "val" });
   const button = counter.root.findByProps({ className: "sub2" });
 
-  await act(async () => {
+  act(() => {
     expect(val.props.value).toBe(0);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(-2);
 
-    await button.props.onClick();
+    button.props.onClick();
 
     expect(val.props.value).toBe(-4);
   });
