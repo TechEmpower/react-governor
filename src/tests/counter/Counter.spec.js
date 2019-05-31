@@ -144,46 +144,50 @@ it("can removeState", async () => {
   });
 });
 
-// it("can asyncFunc", async () => {
-//   const counter = TestRenderer.create(<Counter />);
-//   const val = counter.root.findByProps({ className: "val" });
-//   const button = counter.root.findByProps({ className: "asyncFunc" });
+it("can asyncFunc", async () => {
+  const counter = TestRenderer.create(<Counter />);
+  const val = counter.root.findByProps({ className: "val" });
+  const button = counter.root.findByProps({ className: "asyncFunc" });
 
-//   await act(async () => {
-//     expect(val.props.value).toBe(0);
+  await act(async () => {
+    expect(val.props.value).toBe(0);
 
-//     await button.props.onClick();
+    await button.props.onClick();
 
-//     await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-//     expect(val.props.value).toBe(256);
-//   });
-// });
+    expect(val.props.value).toBe(256);
+  });
+});
 
-// it("can do compound async actions", async () => {
-//   const counter = TestRenderer.create(<Counter />);
-//   const val = counter.root.findByProps({ className: "val" });
-//   const button = counter.root.findByProps({ className: "compoundAsyncFunc" });
+it("can do compound async actions", async () => {
+  const counter = TestRenderer.create(<Counter />);
+  const val = counter.root.findByProps({ className: "val" });
+  const button = counter.root.findByProps({ className: "compoundAsyncFunc" });
 
-//   await act(async () => {
-//     expect(val.props.value).toBe(0);
+  await act(async () => {
+    expect(val.props.value).toBe(0);
 
-//     await button.props.onClick();
+    await button.props.onClick();
 
-//     expect(val.props.value).toBe(257);
-//   });
-// });
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-// it("can fetchGoogle", async () => {
-//   const counter = TestRenderer.create(<Counter />);
-//   const val = counter.root.findByProps({ className: "googleStatus" });
-//   const button = counter.root.findByProps({ className: "fetchGoogle" });
+    expect(val.props.value).toBe(257);
+  });
+});
 
-//   await act(async () => {
-//     expect(val.props.value).toBe(undefined);
+it("can fetchGoogle", async () => {
+  const counter = TestRenderer.create(<Counter />);
+  const val = counter.root.findByProps({ className: "googleStatus" });
+  const button = counter.root.findByProps({ className: "fetchGoogle" });
 
-//     await button.props.onClick();
+  await act(async () => {
+    expect(val.props.value).toBe(undefined);
 
-//     expect(val.props.value).toBe(200);
-//   });
-// });
+    await button.props.onClick();
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    expect(val.props.value).toBe(200);
+  });
+});

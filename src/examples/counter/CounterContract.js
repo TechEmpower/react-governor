@@ -44,21 +44,20 @@ export const contract = {
     const count = await new Promise(resolve =>
       setTimeout(() => {
         resolve(256);
-      }, 1000)
+      }, 500)
     );
 
     // set the state count to our promised count
-    this.set(count);
+    return state => ({
+      count: state.count + count
+    });
   },
   async fetchGoogle() {
     let google = await fetch("https://www.google.com");
 
-    this.setStatus(google.status);
-  },
-  setStatus(status) {
-    return {
-      status
-    };
+    return () => ({
+      status: google.status
+    });
   },
   statedInc(state) {
     return {
