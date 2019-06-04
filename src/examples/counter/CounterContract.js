@@ -39,7 +39,7 @@ export const contract = {
   removeState() {
     return {};
   },
-  async asyncFunc() {
+  async asyncFunc(state) {
     // Block with a promise that resolved a new count
     const count = await new Promise(resolve =>
       setTimeout(() => {
@@ -48,20 +48,15 @@ export const contract = {
     );
 
     // set the state count to our promised count
-    return state => ({
+    return {
       count: state.count + count
-    });
+    };
   },
   async fetchGoogle() {
     let google = await fetch("https://www.google.com");
 
-    return () => ({
-      status: google.status
-    });
-  },
-  statedInc(state) {
     return {
-      count: state.count + 1
+      status: google.status
     };
   }
 };
