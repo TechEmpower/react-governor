@@ -1,99 +1,105 @@
 import { useMemo, useReducer } from "react";
 
-/**
- * Helper function to take a contract and dispatch callback to transfrom
- * them into an object of actions which ultimately dispatch to an underlying
- * reducer.
- *
- * Example:
- * const contract = {
- *   foo(bar, state) {
- *     return {
- *       ...state,
- *       bar
- *     };
- *   }
- * };
- *
- * This contract will be turned into an action that is analogous to:
- * {
- *   foo(bar) {
- *     dispatch({ "reduce": state => contract.foo(bar, state) });
- *   }
- * }
- *
- *
- * Async contract functions are a little different since they return a promise.
- *
- * Example:
- * const contract = {
- *   async foo(bar, state) {
- *     return state => ({
- *       ...state,
- *       bar
- *     });
- *   }
- * };
- *
- * This contract will be turned into an action that is analgous to:
- * {
- *   foo(bar) {
- *     dispatch({ "reduce": state => state });
- *     contract.foo(bar, state).then(reducer => dispatch({
- *       "reduce": state => reducer(state)
- *     }));
- *   }
- * }
- *
- * @param contract The contract from which actions are created
- * @param dispatch The underlying useReducer's dispatch callback
- */
-function createActions(contract, dispatch) {
-  const hookActions = {};
+class HookActions {
+  constructor(contract, dispatch) {
+    this.dispatch = dispatch;
+    this.actions = {};
+    this.contract = contract;
 
-  for (let key in contract) {
-    hookActions[key] = (...args) => {
-      dispatch({
-        reduce: state => {
-          const newState = contract[key](...args, state);
+    for (let actionKey in contract) {
+      if (typeof this.contract[actionKey] !== "function") {
+        throw new TypeError(
+          `action is invalid: expected "function"; for "${typeof this.contract[
+            actionKey
+          ]}"`
+        );
+      }
 
-          if (typeof newState.then === "undefined") {
-            // This was a non-async func; just return the new state
-            return newState;
-          }
+      this.createAction(actionKey);
+    }
+  }
 
-          newState.then(reducer => {
-            let error;
-            if (typeof reducer !== "function") {
-              error = new TypeError(
-                `async action "${key}" must return a reducer function; instead got "${typeof reducer}"`
-              );
-            }
-            // Once the promise is resolved, we need to dispatch a new
-            // action based on the reducer function the async func
-            // returns given the new state at the time of the resolution.
-            dispatch({
-              reduce: state => reducer(state),
-              error
-            });
-          });
+  /**
+   * Takes an actionKey from the underlying contract and creates a corresponding
+   * action.
+   *
+   * Example:
+   * const contract = {
+   *   foo(bar, state) {
+   *     return {
+   *       ...state,
+   *       bar
+   *     };
+   *   }
+   * };
+   *
+   * This contract will be turned into an action that is analogous to:
+   * {
+   *   foo(bar, state, dispatch) {
+   *     dispatch({ "newState": { ...state, bar } });
+   *   }
+   * }
+   *
+   * Async functions are similar, but do not dispatch until their underlying
+   * promise has been fulfilled.
+   *
+   * Example:
+   * const contract = {
+   *   async foo(bar, state) {
+   *     return {
+   *       ...state,
+   *       bar
+   *     };
+   *   }
+   * };
+   *
+   * This contract will be turned into an action that is analogous to:
+   * {
+   *   foo(bar, state, dispatch) {
+   *     new Promise(resolve => ({ ...state, bar })).then(newState => {
+   *       dispatch({ newState });
+   *     });
+   *   }
+   * }
+   *
+   * @param {function} actionKey
+   */
+  createAction(actionKey) {
+    this.actions[actionKey] = (...args) => {
+      const stateOrPromise = this.contract[actionKey](...args, this.state);
 
-          // Async func cannot mutate state directly; return current state.
-          return state;
-        }
-      });
+      // If we have a Promise we do not want to dispatch until it resolves.
+      if (stateOrPromise && stateOrPromise.then) {
+        stateOrPromise.then(newState => {
+          this.__state = newState;
+          this.dispatch({ newState });
+        });
+      } else {
+        this.__state = stateOrPromise;
+
+        this.dispatch({
+          newState: this.state
+        });
+      }
     };
   }
 
-  return hookActions;
+  /**
+   * In order to ensure all calls to `state` in actions are not stale, it
+   * needs to be a callback, but it will only ever be read so we just use a
+   * getter.
+   */
+  get state() {
+    return this.__state;
+  }
 }
 
-// We do not inline this because it would cause 2 renders on first use.
-function reducer(state, action) {
+// We do not inline this reducer because it would cause 2 renders on first use.
+function reducer(_state, action) {
   if (action.error) {
     throw action.error;
   }
-  return action.reduce(state);
+  return action.newState;
 }
 
 /**
@@ -104,22 +110,23 @@ function reducer(state, action) {
  * @returns [state, actions] - the current state of the governor and the
  *          actions that can be invoked.
  */
-function useGovernor(initialState = {}, contract = {}) {
+export function useGovernor(initialState = {}, contract = {}) {
   if (
     !contract ||
     (typeof contract !== "object" && typeof contract !== "function")
   ) {
     throw new TypeError(
-      `contract is invalid: expected "object" or "class"; got "${typeof contract}"`,
+      `contract is invalid: expected "object"; got "${typeof contract}"`,
       contract
     );
   }
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  let [state, dispatch] = useReducer(reducer, initialState);
 
-  const actions = useMemo(() => createActions(contract, dispatch), [contract]);
+  const hookActions = useMemo(() => new HookActions(contract, dispatch), [
+    contract
+  ]);
+  hookActions.__state = state;
 
-  return [state, actions];
+  return [state, hookActions.actions];
 }
-
-export { useGovernor };
