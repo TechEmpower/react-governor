@@ -78,7 +78,7 @@ class HookActions {
         this.__state = stateOrPromise;
 
         this.dispatch({
-          newState: this.state
+          newState: this.state()
         });
       }
     };
@@ -86,12 +86,9 @@ class HookActions {
 
   /**
    * In order to ensure all calls to `state` in actions are not stale, it
-   * needs to be a callback, but it will only ever be read so we just use a
-   * getter.
+   * needs to be a callback.
    */
-  get state() {
-    return this.__state;
-  }
+  state = () => this.__state;
 }
 
 // We do not inline this reducer because it would cause 2 renders on first use.
