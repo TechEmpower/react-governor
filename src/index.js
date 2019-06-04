@@ -55,7 +55,7 @@ class HookActions {
    *
    * This contract will be turned into an action that is analogous to:
    * {
-   *   foo(bar, state, dispatch) {
+   *   foo(bar, dispatch) {
    *     new Promise(resolve => ({ ...this.state, bar })).then(newState => {
    *       dispatch({ newState });
    *     });
