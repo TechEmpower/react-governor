@@ -66,7 +66,7 @@ class HookActions {
    */
   createAction(actionKey) {
     this.actions[actionKey] = (...args) => {
-      const stateOrPromise = this.contract[actionKey](...args, this.state);
+      const stateOrPromise = this.contract[actionKey](...args, this.state, this.getState);
 
       // If we have a Promise we do not want to dispatch until it resolves.
       if (stateOrPromise && stateOrPromise.then) {
@@ -78,7 +78,7 @@ class HookActions {
         this.__state = stateOrPromise;
 
         this.dispatch({
-          newState: this.state
+          newState: this.__state
         });
       }
     };
@@ -92,6 +92,8 @@ class HookActions {
   get state() {
     return this.__state;
   }
+
+  getState = () => this.__state;
 }
 
 // We do not inline this reducer because it would cause 2 renders on first use.
