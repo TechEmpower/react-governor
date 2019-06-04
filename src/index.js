@@ -25,9 +25,9 @@ class HookActions {
    *
    * Example:
    * const contract = {
-   *   foo(bar, state) {
+   *   foo(bar) {
    *     return {
-   *       ...state(),
+   *       ...state,
    *       bar
    *     };
    *   }
@@ -35,8 +35,8 @@ class HookActions {
    *
    * This contract will be turned into an action that is analogous to:
    * {
-   *   foo(bar, state, dispatch) {
-   *     dispatch({ "newState": { ...state(), bar } });
+   *   foo(bar, dispatch) {
+   *     dispatch({ "newState": { ...this.state, bar } });
    *   }
    * }
    *
@@ -45,9 +45,9 @@ class HookActions {
    *
    * Example:
    * const contract = {
-   *   async foo(bar, state) {
+   *   async foo(bar) {
    *     return {
-   *       ...state(),
+   *       ...this.state,
    *       bar
    *     };
    *   }
@@ -56,7 +56,7 @@ class HookActions {
    * This contract will be turned into an action that is analogous to:
    * {
    *   foo(bar, state, dispatch) {
-   *     new Promise(resolve => ({ ...state(), bar })).then(newState => {
+   *     new Promise(resolve => ({ ...this.state, bar })).then(newState => {
    *       dispatch({ newState });
    *     });
    *   }
@@ -66,7 +66,7 @@ class HookActions {
    */
   createAction(actionKey) {
     this.actions[actionKey] = (...args) => {
-      const stateOrPromise = this.contract[actionKey](...args, this.state);
+      const stateOrPromise = this.contract[actionKey].apply(this, [...args]);
 
       // If we have a Promise we do not want to dispatch until it resolves.
       if (stateOrPromise && stateOrPromise.then) {
@@ -78,7 +78,7 @@ class HookActions {
         this.__state = stateOrPromise;
 
         this.dispatch({
-          newState: this.state()
+          newState: this.state
         });
       }
     };
@@ -86,9 +86,12 @@ class HookActions {
 
   /**
    * In order to ensure all calls to `state` in actions are not stale, it
-   * needs to be a callback.
+   * needs to be a callback, but it will only ever be read so we just use a
+   * getter.
    */
-  state = () => this.__state;
+  get state() {
+    return this.__state;
+  }
 }
 
 // We do not inline this reducer because it would cause 2 renders on first use.

@@ -5,7 +5,6 @@
 ![Open Issues](https://img.shields.io/github/issues-raw/techempower/react-governor.svg)
 ![Build Status](https://travis-ci.org/TechEmpower/react-governor.svg?branch=master)
 
-
 Use a governor hook to manage state with actions for, and created by, the people.
 
 Available as an [npm package](https://www.npmjs.com/package/@techempower/react-governor).
@@ -22,14 +21,14 @@ build the boilerplate of `actions`, `dispatch`, and `reducer`.
 const initialState = { count: 1 };
 
 const contract = {
-  increment(state) {
+  increment() {
     return {
-      count: state.count + 1
+      count: this.state.count + 1
     };
   },
-  add(val, state) {
+  add(val) {
     return {
-      count: state.count + val
+      count: this.state.count + val
     }
   }
 }
@@ -48,7 +47,7 @@ export default function Counter() {
 }
 ```
 
-[Test that this works](https://codesandbox.io/s/hopeful-shannon-lz433)
+[Test that this works](https://codesandbox.io/s/currying-star-1it7y)
 
 This should feel very similar to how `useReducer` works with actions and
 reducers.

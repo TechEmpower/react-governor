@@ -3,9 +3,9 @@ export const initialState = {
 };
 
 export const contract = {
-  add(val, state) {
+  add(val) {
     return {
-      count: state().count + val
+      count: this.state.count + val
     };
   },
   set(val) {
@@ -13,14 +13,14 @@ export const contract = {
       count: val
     };
   },
-  multiply(val, state) {
+  multiply(val) {
     return {
-      count: state().count * val
+      count: this.state.count * val
     };
   },
-  divide(val, state) {
+  divide(val) {
     return {
-      count: state().count / val
+      count: this.state.count / val
     };
   }
 };
