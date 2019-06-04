@@ -75,7 +75,7 @@ class HookActions {
           let error;
           if (typeof reducer !== "function") {
             error = new TypeError(
-              `async action "${key}" must return a reducer function; instead got "${typeof reducer}"`
+              `async action "${reducer}" must return a reducer function; instead got "${typeof reducer}"`
             );
           }
           this.__state = reducer.apply(this);
@@ -87,7 +87,7 @@ class HookActions {
       } else {
         if (typeof reducer !== "function") {
           error = new TypeError(
-            `async action "${key}" must return a reducer function; instead got "${typeof reducer}"`
+            `action "${reducer}" must return a reducer function; instead got "${typeof reducer}"`
           );
         }
         this.__state = reducerOrPromise.apply(this);
