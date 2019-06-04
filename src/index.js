@@ -26,10 +26,10 @@ class HookActions {
    * Example:
    * const contract = {
    *   foo(bar) {
-   *     return {
+   *     return () => ({
    *       ...state,
    *       bar
-   *     };
+   *     });
    *   }
    * };
    *
@@ -46,10 +46,10 @@ class HookActions {
    * Example:
    * const contract = {
    *   async foo(bar) {
-   *     return {
+   *     return () => ({
    *       ...this.state,
    *       bar
-   *     };
+   *     });
    *   }
    * };
    *
