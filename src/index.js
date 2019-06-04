@@ -110,7 +110,7 @@ function reducer(_state, action) {
  * @returns [state, actions] - the current state of the governor and the
  *          actions that can be invoked.
  */
-export function useGovernor(initialState = {}, contract = {}) {
+function useGovernor(initialState = {}, contract = {}) {
   if (
     !contract ||
     (typeof contract !== "object" && typeof contract !== "function")
@@ -121,7 +121,7 @@ export function useGovernor(initialState = {}, contract = {}) {
     );
   }
 
-  let [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const hookActions = useMemo(() => new HookActions(contract, dispatch), [
     contract
@@ -130,3 +130,5 @@ export function useGovernor(initialState = {}, contract = {}) {
 
   return [state, hookActions.actions];
 }
+
+export { useGovernor };
