@@ -3,16 +3,16 @@ import { useGovernor } from "../..";
 
 const contract = {
   increment() {
-    return this.state + 1;
+    return () => this.state + 1;
   },
   decrement() {
-    return this.state - 1;
+    return () => this.state - 1;
   },
   add(num) {
-    return this.state + num;
+    return () => this.state + num;
   },
   subtract(num) {
-    return this.state - num;
+    return () => this.state - num;
   }
 };
 

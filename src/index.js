@@ -66,19 +66,35 @@ class HookActions {
    */
   createAction(actionKey) {
     this.actions[actionKey] = (...args) => {
-      const stateOrPromise = this.contract[actionKey].apply(this, [...args]);
+      const reducerOrPromise = this.contract[actionKey].apply(this, [...args]);
+      let error;
 
       // If we have a Promise we do not want to dispatch until it resolves.
-      if (stateOrPromise && stateOrPromise.then) {
-        stateOrPromise.then(newState => {
-          this.__state = newState;
-          this.dispatch({ newState });
+      if (reducerOrPromise && reducerOrPromise.then) {
+        reducerOrPromise.then(reducer => {
+          let error;
+          if (typeof reducer !== "function") {
+            error = new TypeError(
+              `async action "${key}" must return a reducer function; instead got "${typeof reducer}"`
+            );
+          }
+          this.__state = reducer.apply(this);
+          this.dispatch({
+            newState: this.state,
+            error
+          });
         });
       } else {
-        this.__state = stateOrPromise;
+        if (typeof reducer !== "function") {
+          error = new TypeError(
+            `async action "${key}" must return a reducer function; instead got "${typeof reducer}"`
+          );
+        }
+        this.__state = reducerOrPromise.apply(this);
 
         this.dispatch({
-          newState: this.state
+          newState: this.state,
+          error
         });
       }
     };

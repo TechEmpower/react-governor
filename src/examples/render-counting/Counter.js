@@ -13,19 +13,19 @@ export default function Counter() {
     actions.multiply(0);
     actions.add(2);
     actions.add(6);
-  }, []);
+  }, [actions]);
 
   useEffect(() => {
     if (state.count === 2) {
       actions.set(-1);
     }
-  }, [state.count]);
+  }, [actions, state.count]);
 
   useEffect(() => {
     if (state.count === 8) {
       actions.divide(2);
     }
-  }, [state.count]);
+  }, [actions, state.count]);
 
   numRenders++;
 

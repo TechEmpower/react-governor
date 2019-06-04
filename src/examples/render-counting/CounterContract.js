@@ -4,23 +4,23 @@ export const initialState = {
 
 export const contract = {
   add(val) {
-    return {
+    return () => ({
       count: this.state.count + val
-    };
+    });
   },
   set(val) {
-    return {
+    return () => ({
       count: val
-    };
+    });
   },
   multiply(val) {
-    return {
+    return () => ({
       count: this.state.count * val
-    };
+    });
   },
   divide(val) {
-    return {
+    return () => ({
       count: this.state.count / val
-    };
+    });
   }
 };
