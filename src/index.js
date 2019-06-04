@@ -27,7 +27,7 @@ class HookActions {
    * const contract = {
    *   foo(bar, state) {
    *     return {
-   *       ...state,
+   *       ...state(),
    *       bar
    *     };
    *   }
@@ -36,7 +36,7 @@ class HookActions {
    * This contract will be turned into an action that is analogous to:
    * {
    *   foo(bar, state, dispatch) {
-   *     dispatch({ "newState": { ...state, bar } });
+   *     dispatch({ "newState": { ...state(), bar } });
    *   }
    * }
    *
@@ -47,7 +47,7 @@ class HookActions {
    * const contract = {
    *   async foo(bar, state) {
    *     return {
-   *       ...state,
+   *       ...state(),
    *       bar
    *     };
    *   }
@@ -56,7 +56,7 @@ class HookActions {
    * This contract will be turned into an action that is analogous to:
    * {
    *   foo(bar, state, dispatch) {
-   *     new Promise(resolve => ({ ...state, bar })).then(newState => {
+   *     new Promise(resolve => ({ ...state(), bar })).then(newState => {
    *       dispatch({ newState });
    *     });
    *   }
