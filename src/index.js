@@ -27,7 +27,7 @@ class HookActions {
    * const contract = {
    *   foo(bar) {
    *     return () => ({
-   *       ...state,
+   *       ...this.state,
    *       bar
    *     });
    *   }
