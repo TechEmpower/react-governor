@@ -61,12 +61,12 @@ class Governor {
    *   }
    * }
    *
-   * @param {function} action
+   * @param {function} createReducer
    * @param {string} actionKey
    */
-  createAction(action, actionKey) {
+  createAction(createReducer, actionKey) {
     this.actions[actionKey] = (...args) => {
-      const reducerOrPromise = action.apply(this, [...args]);
+      const reducerOrPromise = createReducer.apply(this, [...args]);
 
       // If we have a Promise we do not want to dispatch until it resolves.
       if (reducerOrPromise && reducerOrPromise.then) {
