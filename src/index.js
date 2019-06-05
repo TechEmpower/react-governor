@@ -1,6 +1,6 @@
 import { useMemo, useReducer } from "react";
 
-class HookActions {
+class Governor {
   constructor(contract, dispatch) {
     this.dispatch = dispatch;
     this.actions = {};
@@ -133,12 +133,10 @@ function useGovernor(initialState, contract) {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const hookActions = useMemo(() => new HookActions(contract, dispatch), [
-    contract
-  ]);
-  hookActions.__state = state;
+  const governor = useMemo(() => new Governor(contract, dispatch), [contract]);
+  governor.__state = state;
 
-  return [state, hookActions.actions];
+  return [state, governor.actions];
 }
 
 export { useGovernor };
