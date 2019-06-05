@@ -4,18 +4,17 @@ class Governor {
   constructor(contract, dispatch) {
     this.dispatch = dispatch;
     this.actions = {};
-    this.contract = contract;
 
     for (let actionKey in contract) {
-      if (typeof this.contract[actionKey] !== "function") {
+      if (typeof contract[actionKey] !== "function") {
         throw new TypeError(
-          `action is invalid: expected "function"; for "${typeof this.contract[
+          `action is invalid: expected "function"; for "${typeof contract[
             actionKey
           ]}"`
         );
       }
 
-      this.createAction(actionKey);
+      this.createAction(contract[actionKey], actionKey);
     }
   }
 
@@ -62,11 +61,12 @@ class Governor {
    *   }
    * }
    *
-   * @param {function} actionKey
+   * @param {function} action
+   * @param {string} actionKey
    */
-  createAction(actionKey) {
+  createAction(action, actionKey) {
     this.actions[actionKey] = (...args) => {
-      const reducerOrPromise = this.contract[actionKey].apply(this, [...args]);
+      const reducerOrPromise = action.apply(this, [...args]);
 
       // If we have a Promise we do not want to dispatch until it resolves.
       if (reducerOrPromise && reducerOrPromise.then) {
