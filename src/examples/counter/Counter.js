@@ -20,6 +20,14 @@ export default function Counter() {
         onClick={() => actions.addNewState("Hello")}
       />
       <button className="removeState" onClick={() => actions.removeState()} />
+      <button
+        className="actionWithoutReducer"
+        onClick={() => actions.actionWithoutReducer()}
+      />
+      <button
+        className="asyncActionWithoutReducer"
+        onClick={() => actions.asyncActionWithoutReducer()}
+      />
       <button className="asyncFunc" onClick={() => actions.asyncFunc()} />
       <button
         className="compoundAsyncFunc"
