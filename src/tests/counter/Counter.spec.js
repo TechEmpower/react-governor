@@ -144,6 +144,23 @@ it("can removeState", () => {
   });
 });
 
+it("properly reports action error", () => {
+  const counter = TestRenderer.create(<Counter />);
+  const button = counter.root.findByProps({
+    className: "actionWithoutReducer"
+  });
+
+  act(() => {
+    // ReactDOM will still output an error to the console; let's hide that for this test
+    const tmp = console.error;
+    console.error = function() {};
+    expect(() => button.props.onClick()).toThrow(
+      `action "actionWithoutReducer" must return a reducer function; instead got "object"`
+    );
+    console.error = tmp;
+  });
+});
+
 it("can asyncFunc", async () => {
   const counter = TestRenderer.create(<Counter />);
   const val = counter.root.findByProps({ className: "val" });

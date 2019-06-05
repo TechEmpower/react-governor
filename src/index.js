@@ -67,37 +67,31 @@ class HookActions {
   createAction(actionKey) {
     this.actions[actionKey] = (...args) => {
       const reducerOrPromise = this.contract[actionKey].apply(this, [...args]);
-      let error;
 
       // If we have a Promise we do not want to dispatch until it resolves.
       if (reducerOrPromise && reducerOrPromise.then) {
         reducerOrPromise.then(reducer => {
-          let error;
-          if (typeof reducer !== "function") {
-            error = new TypeError(
-              `async action "${reducer}" must return a reducer function; instead got "${typeof reducer}"`
-            );
-          }
-          this.__state = reducer.apply(this);
-          this.dispatch({
-            newState: this.state,
-            error
-          });
+          this.dispatchFromActionReducer(reducer, actionKey);
         });
       } else {
-        if (typeof reducer !== "function") {
-          error = new TypeError(
-            `action "${reducer}" must return a reducer function; instead got "${typeof reducer}"`
-          );
-        }
-        this.__state = reducerOrPromise.apply(this);
-
-        this.dispatch({
-          newState: this.state,
-          error
-        });
+        this.dispatchFromActionReducer(reducerOrPromise, actionKey);
       }
     };
+  }
+
+  dispatchFromActionReducer(reducer, actionKey) {
+    let error;
+    if (typeof reducer !== "function") {
+      error = new TypeError(
+        `action "${actionKey}" must return a reducer function; instead got "${typeof reducer}"`
+      );
+    } else {
+      this.__state = reducer.apply(this);
+    }
+    this.dispatch({
+      newState: this.state,
+      error
+    });
   }
 
   /**
@@ -126,7 +120,7 @@ function reducer(_state, action) {
  * @returns [state, actions] - the current state of the governor and the
  *          actions that can be invoked.
  */
-function useGovernor(initialState = {}, contract = {}) {
+function useGovernor(initialState, contract) {
   if (
     !contract ||
     (typeof contract !== "object" && typeof contract !== "function")

@@ -22,5 +22,10 @@ export const contract = {
     return () => ({
       count: this.state.count / val
     });
+  },
+  async asyncMultiply(val) {
+    return () => ({
+      count: this.state.count * val
+    });
   }
 };

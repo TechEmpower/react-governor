@@ -39,6 +39,12 @@ export const contract = {
   removeState() {
     return () => ({});
   },
+  actionWithoutReducer() {
+    return {};
+  },
+  async asyncActionWithoutReducer() {
+    return {};
+  },
   async asyncFunc() {
     // Block with a promise that resolved a new count
     const count = await new Promise(resolve =>
