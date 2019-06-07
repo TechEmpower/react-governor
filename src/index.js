@@ -25,8 +25,8 @@ class Governor {
    * Example:
    * const contract = {
    *   foo(bar) {
-   *     return () => ({
-   *       ...this.state,
+   *     return state => ({
+   *       ...state,
    *       bar
    *     });
    *   }
@@ -45,8 +45,8 @@ class Governor {
    * Example:
    * const contract = {
    *   async foo(bar) {
-   *     return () => ({
-   *       ...this.state,
+   *     return state => ({
+   *       ...state,
    *       bar
    *     });
    *   }
@@ -66,7 +66,7 @@ class Governor {
    */
   createAction(createReducer, actionKey) {
     this.actions[actionKey] = (...args) => {
-      const reducerOrPromise = createReducer.apply(this, [...args]);
+      const reducerOrPromise = createReducer(...args, this.getState);
 
       // If we have a Promise we do not want to dispatch until it resolves.
       if (reducerOrPromise && reducerOrPromise.then) {
@@ -86,7 +86,7 @@ class Governor {
         `action "${actionKey}" must return a reducer function; instead got "${typeof reducer}"`
       );
     } else {
-      this.__state = reducer.apply(this);
+      this.__state = reducer(this.state);
     }
     this.dispatch({
       newState: this.state,
@@ -102,6 +102,10 @@ class Governor {
   get state() {
     return this.__state;
   }
+
+  getState = () => {
+    return this.__state;
+  };
 }
 
 // We do not inline this reducer because it would cause 2 renders on first use.

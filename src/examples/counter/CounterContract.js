@@ -6,18 +6,18 @@ export const initialState = {
 
 export const contract = {
   increment() {
-    return () => ({
-      count: this.state.count + 1
+    return state => ({
+      count: state.count + 1
     });
   },
   decrement() {
-    return () => ({
-      count: this.state.count - 1
+    return state => ({
+      count: state.count - 1
     });
   },
   add(val) {
-    return () => ({
-      count: this.state.count + val
+    return state => ({
+      count: state.count + val
     });
   },
   set(val) {
@@ -26,13 +26,13 @@ export const contract = {
     });
   },
   addSum(val, val2) {
-    return () => ({
-      count: this.state.count + val + val2
+    return state => ({
+      count: state.count + val + val2
     });
   },
   addNewState(val) {
-    return () => ({
-      ...this.state,
+    return state => ({
+      ...state,
       newState: val
     });
   },
@@ -54,8 +54,8 @@ export const contract = {
     );
 
     // set the state count to our promised count
-    return () => ({
-      count: this.state.count + count
+    return state => ({
+      count: state.count + count
     });
   },
   async fetchGoogle() {

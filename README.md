@@ -22,13 +22,13 @@ const initialState = { count: 1 };
 
 const contract = {
   increment() {
-    return () => ({
-      count: this.state.count + 1
+    return state => ({
+      count: state.count + 1
     });
   },
   add(val) {
-    return () => ({
-      count: this.state.count + val
+    return state => ({
+      count: state.count + val
     });
   }
 }
