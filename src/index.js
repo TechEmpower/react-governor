@@ -1,9 +1,12 @@
 import { useMemo, useReducer } from "react";
 
 class Governor {
-  constructor(contract, dispatch) {
+  constructor(contract, dispatch, initialState, middlewares = []) {
     this.dispatch = dispatch;
     this.actions = {};
+    this.middlewares = Array.isArray(middlewares) ? middlewares : [middlewares];
+
+    this.middlewares = this.middlewares.map(mw => mw(initialState, dispatch));
 
     for (let actionKey in contract) {
       if (typeof contract[actionKey] !== "function") {
@@ -80,18 +83,25 @@ class Governor {
   }
 
   dispatchFromActionReducer(reducer, actionKey) {
-    let error;
+    let newState, error;
     if (typeof reducer !== "function") {
       error = new TypeError(
         `action "${actionKey}" must return a reducer function; instead got "${typeof reducer}"`
       );
-    } else {
-      this.__state = reducer(this.state);
+      this.dispatch({ error });
+      return;
     }
-    this.dispatch({
-      newState: this.state,
-      error
-    });
+
+    newState = reducer(this.state);
+
+    // middleware
+    for (let middleware of this.middlewares) {
+      newState = middleware(actionKey, newState);
+    }
+
+    this.__state = newState;
+
+    this.dispatch({ newState: this.state });
   }
 
   /**
@@ -121,10 +131,11 @@ function reducer(_state, action) {
  *
  * @param initialState The initial state of the governor
  * @param contract The contract from which actions are created
+ * @param middlewares A single middleware function or array of middleware functions
  * @returns [state, actions] - the current state of the governor and the
  *          actions that can be invoked.
  */
-function useGovernor(initialState, contract) {
+function useGovernor(initialState, contract, middlewares) {
   if (
     !contract ||
     (typeof contract !== "object" && typeof contract !== "function")
@@ -137,10 +148,14 @@ function useGovernor(initialState, contract) {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const governor = useMemo(() => new Governor(contract, dispatch), [contract]);
+  const governor = useMemo(
+    () => new Governor(contract, dispatch, initialState, middlewares),
+    [contract, initialState, middlewares]
+  );
+
   governor.__state = state;
 
-  return [state, governor.actions];
+  return [governor.__state, governor.actions];
 }
 
 export { useGovernor };
