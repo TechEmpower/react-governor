@@ -1,9 +1,9 @@
 # React Governor
 
-![NPM VERSION](https://img.shields.io/npm/v/@techempower/react-governor.svg)
+[![NPM VERSION](https://img.shields.io/npm/v/@techempower/react-governor.svg)](https://www.npmjs.com/package/@techempower/react-governor)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
-![Open Issues](https://img.shields.io/github/issues-raw/techempower/react-governor.svg)
-![Build Status](https://travis-ci.org/TechEmpower/react-governor.svg?branch=master)
+[![Open Issues](https://img.shields.io/github/issues-raw/techempower/react-governor.svg)](https://github.com/TechEmpower/react-governor/issues)
+[![Build Status](https://travis-ci.org/TechEmpower/react-governor.svg?branch=master)](https://travis-ci.org/TechEmpower/react-governor)
 
 Use a governor hook to manage state with actions for, and created by, the people.
 
